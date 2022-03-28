@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "dependencies": {
     "body-parser": "^1.19.2",
     "express": "^4.17.3",
@@ -10,6 +11,23 @@
   "name": "team-final",
   "version": "1.0.0",
   "main": "server.js",
+=======
+  "name": "team-final",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+>>>>>>> main
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cit-270-team-final/team-final.git"
@@ -19,6 +37,10 @@
   "bugs": {
     "url": "https://github.com/cit-270-team-final/team-final/issues"
   },
+<<<<<<< HEAD
   "homepage": "https://github.com/cit-270-team-final/team-final#readme",
   "description": ""
+=======
+  "homepage": "https://github.com/cit-270-team-final/team-final#readme"
+>>>>>>> main
 }
