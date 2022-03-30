@@ -3,15 +3,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-const express = require('express');
-const req = require('express/lib/request');
-const res = require('express/lib/response');
-const bodyParser = require('body-parser');
-const https = require('https')
+
+
 const app = express()
 const fs = require('fs')
 const md5 = require('md5');
-const port = 443;
+//const port = 443;
 
 let Invalid_loginAttempts= 0;
 
@@ -25,15 +22,15 @@ app.get('/', (req, res) => {
 });
 
 //...
-try{
-https.createServer({
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-}, app).listen(port, () => {
-  console.log('Listening...')
-})} catch(error){
-    console.log(error)
-}
+// try{
+// https.createServer({
+//   key: fs.readFileSync('server.key'),
+//   cert: fs.readFileSync('server.cert')
+// }, app).listen(port, () => {
+//   console.log('Listening...')
+// })} catch(error){
+//     console.log(error)
+// }
 
 
 
@@ -53,3 +50,26 @@ app.post('/login', (req, res) =>{
         console.log(Invalid_loginAttempts+ "invalid attempt made")
     }
 });
+
+
+const port = 8080;
+
+const MONGODB_URI =
+   process.env.MONGODB_URL ||
+   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.z8i5l.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+
+
+mongoose
+   .connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+   })
+   .then(() => {
+      app.listen(port, () => {
+         console.log(`DB Connected and server running on ${port}.`);
+      });
+   })
+   .catch((err) => {
+      console.log('Cannot connect to the database!', err);
+      process.exit();
+   });
