@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 node_modules
 data.json
+=======
+<<<<<<< HEAD
+data.json
+node_modules
+=======
+>>>>>>> felipe
 /node_modules
 .env
+>>>>>>> main
