@@ -1,13 +1,16 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express()
+const port = 8080;
 const http = require('http')
+const mongodb = require('mongodb')
 require('dotenv').config();
 
-const { v4: uuidv4 } = require('uuid');
-uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb+srv://cit270-final:Passw0rd123@cluster0.okmzh.mongodb.net/test";
 
+const { v4: uuidv4 } = require('uuid');
+uuidv4(); 
 
 let invalidloginAttemps = 0;
 
@@ -17,12 +20,42 @@ app.get('/', (req,res)=>{
    res.send("Hello browser");
 });
 
+app.post('/create',(req,res) => {
+   MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("cit270-login-database");
+      dbo.collection("team-final").insertOne(req.body, function(err, res) {
+        if (err) throw err;
+        console.log("1 document inserted");
+        db.close();
+      });
+    });
+
+    res.send("User created")
+});
+
 app.post('/login',(req,res) => {
+   let user = {};
+   let dbResult = [];
    console.log(JSON.stringify(req.body));
+
+   MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("cit270-login-database");
+      var query = { userName: req.body.userName };
+      dbo.collection("team-final").find(query).toArray(function(err, result) {
+        dbResult = result;
+        user = result[0]; //first user
+        if (err) throw err;
+        console.log(result);
+        db.close();
+      });
+    });
+
    if(invalidloginAttemps>=5) {
        res.status(401); 
    }
-   else if (req.body.userName =="aquaisie" && (req.body.password) =="P@ssw0rd"){
+   else if (req.body.password == user.password){
       let myuuid = uuidv4();
       console.log('Your UUID is: ' + myuuid);
        res.send(myuuid)
@@ -33,26 +66,11 @@ app.post('/login',(req,res) => {
        res.status(401); //unauthorized
        res.send("Who are you?")
    }
-})
+});
 
-const port = 8080;
-
-const MONGODB_URI =
-   process.env.MONGODB_URL ||
-   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.z8i5l.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+app.listen(port, () => {
+   console.log(`DB Connected and server running on ${port}.`);
+});
 
 
-mongoose
-   .connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-   })
-   .then(() => {
-      app.listen(port, () => {
-         console.log(`DB Connected and server running on ${port}.`);
-      });
-   })
-   .catch((err) => {
-      console.log('Cannot connect to the database!', err);
-      process.exit();
-   });
+
