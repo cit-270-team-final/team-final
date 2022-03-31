@@ -1,6 +1,7 @@
+// Model created for user object. Mongoose library is used to facilate easier coding.
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 
 const userSchema = new Schema({
    userName: String,

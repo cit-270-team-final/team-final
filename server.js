@@ -34,7 +34,7 @@ app.post('/createUser', (req, res) => {
    const accountType = req.body.accountType;
    const phone = req.body.phone;
 
-   password = md5(password);
+   password = md5(password); //password saved to database as a hashed md5 string
 
    const user = new User({
       userName: userName,
