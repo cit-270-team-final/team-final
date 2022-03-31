@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express()
 const http = require('http')
+const User = require('user.js');
 require('dotenv').config();
 
 const { v4: uuidv4 } = require('uuid');
+const md5 = require('md5');
 uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 
 
@@ -24,6 +26,18 @@ app.post('/createUser', (req, res) => {
    const verifyPassword = req.body.verifyPassword;
    const accountType = req.body.accountType;
    const phone = req.body.phone;
+
+   password = md5(password);
+
+   const user = new User({
+      userName: userName,
+      email: email,
+      password: password,
+      verifyPassword: verifyPassword,
+      accountType: accountType,
+      phone: phone
+   })
+   user.save();
 })
 
 app.post('/login',(req,res) => {
