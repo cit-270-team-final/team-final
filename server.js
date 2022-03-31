@@ -1,14 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { v4: uuidv4 } = require('uuid');
 const User = require('./user');
 require('dotenv').config();
 
 const app = express();
 
-const {
-   v4: uuidv4
-} = require('uuid');
 const md5 = require('md5');
 uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 
@@ -46,7 +44,7 @@ app.post('/createUser', (req, res) => {
       accountType: accountType,
       phone: phone
    })
-   console.log(user);
+
    return user.save()
       .then((user) => {
          res.status(201).send(`Successfully created user!`)
@@ -59,7 +57,6 @@ app.post('/login', (req, res) => {
       res.status(401);
    } else if (req.body.userName == "shun@yahoo.com" && (req.body.password) == "P@ssw0rd") {
       let myuuid = uuidv4();
-      console.log('Your UUID is: ' + myuuid);
       res.send(myuuid);
    } else {
       invalidloginAttemps++;
