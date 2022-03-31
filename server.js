@@ -17,19 +17,28 @@ app.get('/', (req,res)=>{
    res.send("Hello browser");
 });
 
+app.post('/createUser', (req, res) => {
+   const userName = req.body.userName;
+   const email = req.body.email;
+   const password = req.body.password;
+   const verifyPassword = req.body.verifyPassword;
+   const accountType = req.body.accountType;
+   const phone = req.body.phone;
+})
+
 app.post('/login',(req,res) => {
    console.log(JSON.stringify(req.body));
    if(invalidloginAttemps>=5) {
        res.status(401); 
    }
-   else if (req.body.userName =="aquaisie" && (req.body.password) =="P@ssw0rd"){
+   else if (req.body.userName =="shun@yahoo.com" && (req.body.password) =="P@ssw0rd"){
       let myuuid = uuidv4();
       console.log('Your UUID is: ' + myuuid);
-       res.send(myuuid)
+       res.send(myuuid) 
    }
    else{
        invalidloginAttemps++;
-       console.log(invalidloginAttemps+" invalid attemps");
+       console.log(invalidloginAttemps+" invalid attempts");
        res.status(401); //unauthorized
        res.send("Who are you?")
    }
