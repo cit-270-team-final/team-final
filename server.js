@@ -4,7 +4,7 @@ const app = express()
 const port = 8080;
 const http = require('http')
 const mongodb = require('mongodb')
-require('dotenv').config();
+
 
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb+srv://cit270-final:Passw0rd123@cluster0.okmzh.mongodb.net/test";
@@ -37,6 +37,7 @@ app.post('/create',(req,res) => {
 app.post('/login',(req,res) => {
    let user = {};
    let dbResult = [];
+   
    console.log(JSON.stringify(req.body));
 
    MongoClient.connect(url, function(err, db) {
@@ -46,11 +47,14 @@ app.post('/login',(req,res) => {
       dbo.collection("team-final").find(query).toArray(function(err, result) {
         dbResult = result;
         user = result[0]; //first user
+        console.log ("user",user)
+        console.log ("password", user.password)
         if (err) throw err;
         console.log(result);
         db.close();
       });
     });
+    console.log ("line 57", user)
 
    if(invalidloginAttemps>=5) {
        res.status(401); 
@@ -61,6 +65,8 @@ app.post('/login',(req,res) => {
        res.send(myuuid)
    }
    else{
+      console.log (req.body.password)
+      console.log (user.password)
        invalidloginAttemps++;
        console.log(invalidloginAttemps+" invalid attemps");
        res.status(401); //unauthorized
